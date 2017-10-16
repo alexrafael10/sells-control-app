@@ -1,26 +1,46 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+
+import Dashboard from './Dashboard';
+import Control from './Control';
+
 import './App.css';
 
 class App extends Component {
-  state = {clients : []}
+  
+  constructor(props){
+    super(props);
 
-  componentDidMount(){
-    fetch('/clients')
-      .then(res => res.json())
-      .then(clients => this.setState({clients}));
+    this.state = {
+      menu: 'dashboard'
+    }
+
+    this.onChangeMenu = this.onChangeMenu.bind(this);
   }
+
+  onChangeMenu (menu){
+    this.setState({menu:menu});
+  }
+  
   render() {
+    let menu = this.state.menu;
+
+    if (menu == 'dashboard'){
+      return (
+        <div className="App">
+          <Dashboard onChangeMenu={this.onChangeMenu}/>
+        </div>
+      );
+    } else if (menu == 'control'){
+      return (
+        <div className="App">
+          <Control />
+        </div>
+      );
+    }
+    
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <h1> Clients </h1>
-        {this.state.clients.map(client =>
-          <div key={client.id}> {client.name} </div>
-        )}
+        <Control />
       </div>
     );
   }
